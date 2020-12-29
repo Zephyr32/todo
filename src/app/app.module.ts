@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import {A11yModule} from '@angular/cdk/a11y';
@@ -47,14 +47,17 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 import{BrowserAnimationsModule}from "@angular/platform-browser/animations";
+import { EditDataDialogComponent } from './edit-data-dialog/edit-data-dialog.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EditDataDialogComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     A11yModule,
     ClipboardModule,

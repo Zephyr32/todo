@@ -12,8 +12,24 @@ html,body{
 .content{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items:center;
+    justify-content:left;
     width: 100%;
     margin-top: 100px;
     background-color: white;
+}
+mat-list{
+    margin-top: 50px;
+    width: 80%;
+}
+mat-list-item{
+    margin-top: 25px;
+}
+mat-card{
+    margin: 5px;
+    width: 100%;
+}
+.item-description{
+    justify-content: center;
+    align-items: center;
 }

@@ -1,17 +1,41 @@
 <div class="content">
-  <div><mat-form-field appearance="outline">
-    <mat-label>Enter Task</mat-label>
-    <input   matInput placeholder="Placeholder" [(ngModel)]="newTask" >
-  </mat-form-field>
-  <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="addTasks()">
-    <mat-icon>add</mat-icon>
-  </button></div>
-<mat-list role="list">
-  <mat-list-item *ngFor="let item of items; let i=index"  role="listitem">
-    <span>{{i}}.{{item}}</span>
-    <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="removeTask($event)">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </mat-list-item>
-</mat-list>
+  <div>
+    <form [formGroup]="taskFb">
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Task</mat-label>
+          <input matInput placeholder="Task Name" formControlName="nameTask">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Description</mat-label>
+          <textarea matInput placeholder="Description" formControlName="descriptionTask"></textarea>
+        </mat-form-field>
+        <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="addTasks()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </form>
+  </div>
+  <mat-list role="list">
+    <mat-card *ngFor="let task of Tasks; let i=index" role="listtask">
+      <div class="task-content">
+        <mat-card-title class="task-header">
+          <span matLine>{{task.name}}</span>
+        </mat-card-title>
+        <mat-card-content class="task-decription">
+          <span matLine>{{task.description}}</span>
+        </mat-card-content>
+        <mat-card-actions class="task-controls">
+          <button mat-fab color="primary" (click)="removeTask(task)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-fab color="primary" (click)="edittask(task)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-card-actions>
+      </div>
+    </mat-card>
+  </mat-list>
 </div>
