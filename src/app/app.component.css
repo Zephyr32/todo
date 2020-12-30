@@ -15,8 +15,7 @@ html,body{
     align-items:center;
     justify-content:left;
     width: 100%;
-    margin-top: 100px;
-    background-color: white;
+    background-color: azure;
 }
 mat-list{
     margin-top: 50px;
@@ -32,4 +31,10 @@ mat-card{
 .item-description{
     justify-content: center;
     align-items: center;
+}
+.list{
+    width: 100%;
+}
+.control{
+    margin: 10px;
 }

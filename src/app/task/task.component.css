@@ -1,0 +1,11 @@
+.task-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top:5px;
+    padding-inline-end: 25px;
+    padding-inline-start: 25px;
+}
+.button{
+    margin: 5px;
+}

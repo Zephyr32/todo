@@ -1,4 +1,4 @@
-<form [formGroup]="editForm">
+<form [formGroup]="taskFb">
   <h1 mat-dialog-title>Edit</h1>
   <div mat-dialog-content>
     <p>Edit data</p>
@@ -10,10 +10,17 @@
       <mat-label>Description Task</mat-label>
       <textarea matInput formControlName="editDescriptionTask"></textarea>
     </mat-form-field>
+    <div *ngFor="let control of formarray.controls; index as i">
+      <mat-form-field >
+        <mat-label>Control {{i}}</mat-label>
+        <input matInput  [formControl]="formarray.controls[i]" value=""/>
+      </mat-form-field>
+    </div>
+    <!-- <span>{{formarr.controls| json}}</span> -->
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()">No Thanks</button>
-    <button mat-button [mat-dialog-close]="false">No Thanks</button>
-    <button mat-button (click)="onClick()" [disabled]="!editForm.valid">Ok</button>
+    <button mat-button (click)="onClick()" [disabled]="!taskFb.valid">Ok</button>
+    <button mat-button (click)="addInput()">MOREE</button>
   </div>
 </form>

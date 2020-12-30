@@ -48,11 +48,17 @@ import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 import{BrowserAnimationsModule}from "@angular/platform-browser/animations";
 import { EditDataDialogComponent } from './edit-data-dialog/edit-data-dialog.component';
+import { TaskComponent } from './task/task.component';
+import { ListComponent } from './list/list.component';
+import { FilterPipe } from './model/pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EditDataDialogComponent
+    EditDataDialogComponent,
+    TaskComponent,
+    ListComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

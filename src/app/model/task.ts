@@ -2,6 +2,7 @@ export class Task{
     public id?:number;
     public name:string;
     public description:string;
+    public addingshit:[];
     constructor(init?: Partial<Task>){
         init ? Object.assign(this, init) : this.clear();
     }
@@ -13,6 +14,7 @@ export class Task{
     }
     edit(init?: Partial<Task>){
         init ? Object.assign(this, init) : this.clear();
+        return this;
     }
     public clear() {
         this.name = null;

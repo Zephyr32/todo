@@ -1,0 +1,5 @@
+<mat-list role="list">
+    <mat-card *ngFor="let task of Tasks | pipefilter: search" role="listtask">
+        <app-task [task]="task" (edit)="edit.emit(task)" (remove)="remove.emit(task)"></app-task>
+    </mat-card>
+</mat-list>

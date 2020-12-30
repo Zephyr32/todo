@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { DialogData, EditDataDialogComponent } from './edit-data-dialog/edit-data-dialog.component';
+import { EditDataDialogComponent } from './edit-data-dialog/edit-data-dialog.component';
 import { Task } from './model/task';
 
 @Component({
@@ -12,59 +11,49 @@ import { Task } from './model/task';
 })
 export class AppComponent {
   Tasks: Task[] = [];
-  newTask: Task = new Task({ id: 1 });
-  taskFb:FormGroup;
-
-  constructor(public dialog: MatDialog,private fb: FormBuilder) {
+  etask: Task;
+  search:string;
+  fg:FormGroup;
   
-    this._createForm();
+  constructor(public dialog: MatDialog,fb:FormBuilder) {
+    this.fg=fb.group({
+      search:['']
+    });
+    this.fg.get('search').valueChanges.subscribe((value)=>{
+      this.search=value;
+    });
   }
-  _createForm(){
-    this.taskFb=this.fb.group({
-      nameTask:['',[Validators.required,Validators.minLength(3)]],
-      descriptionTask:['',[Validators.required,Validators.minLength(5)]]
-    })
-  }
+
   title = 'todo';
 
-  addTasks() {
-    if (this.taskFb.get('nameTask').valid && this.taskFb.valid) {
-      this.newTask = new Task({ 
-        id: this.Tasks.length + 1,
-        name: this.taskFb.value['nameTask'],
-        description: this.taskFb.value['descriptionTask']
-      });
-      this.Tasks.push(this.newTask);
-      this.taskFb.reset();
-    }
-  }
-
-  removeTask(task: Task) {
+  removeTask(task) {
     this.Tasks.splice(this.Tasks.indexOf(task), 1);
   }
 
-  edittask(task: DialogData): void {
-    const dublicat: DialogData = {
-      id: task.id,
-      name: task.name,
-      description: task.description
-    }
+  editTask(task) {
+    this.etask = task;
+    this.openDialog();
+  }
+
+  
+
+  openDialog() {
     this.dialog.open(EditDataDialogComponent, {
       width: '400px',
-      data: dublicat
+      data: this.etask ? this.etask : new Task()
     })
-    .afterClosed()
-    .subscribe(result => {
-      if (result) {
-        this.Tasks.find((task) => {
-          if (task.id == result.id) {
-            task.edit({
-              name:result.name,
-              description:result.description
-            });
-          }
-        });
-      }
-    });
+      .afterClosed()
+      .subscribe(result => {
+        if (result && result.id) {
+          this.Tasks = this.Tasks.filter((task)=>task.id!=result.id);
+          this.Tasks.push(result);
+        } else if (result) {
+          this.Tasks.push(new Task({
+            id: this.Tasks.length+ 1,
+            name: result.name,
+            description: result.description,
+          }));
+        }
+      });
   }
 }
