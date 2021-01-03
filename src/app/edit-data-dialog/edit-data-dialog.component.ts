@@ -12,32 +12,30 @@ import { Task } from '../model/task';
 export class EditDataDialogComponent implements OnInit {
   taskFb: FormGroup;
   butt: MatButton;
-  formarr:FormArray;
+
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<EditDataDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data:Task
-  ){ 
-    this.createForm();
-    this.formarr=new FormArray([]);
+    public data: Task
+  ) {
+
   }
-  addInput(){
-    console.log(this.formarr);
-    console.log(this.taskFb);
-    this.formarray.push(new FormControl(''));
+  addInput() {
+    this.formarray.push(new FormControl('', Validators.required));
   }
-  get formarray(){return this.taskFb.get('inputs') as FormArray;} 
+  get formarray() { return this.taskFb.get('inputs') as FormArray; }
   onClick(): void {
-    if (this.taskFb.get('editNameTask').valid && this.taskFb.valid) {
+    if (this.taskFb.get('editNameTask').valid && this.taskFb.get('editDescriptionTask').valid) {
       this.data.name = this.taskFb.value['editNameTask'];
       this.data.description = this.taskFb.value['editDescriptionTask'];
-      this.data.addingshit.push()
+      this.data.addingshit.splice(0, this.data.addingshit.length);
+      Array.prototype.push.apply(this.data.addingshit, this.taskFb.value['inputs']);
       this.taskFb.reset();
       this.dialogRef.close(this.data);
-      
-   }
+
+    }
 
   }
 
@@ -45,16 +43,17 @@ export class EditDataDialogComponent implements OnInit {
     this.createForm();
   }
 
-  createForm(){
-    this.taskFb=this.fb.group({
-      editNameTask:[this.data?this.data.name:'',[Validators.required,Validators.minLength(3),Validators.maxLength(40)]],
-      editDescriptionTask:[this.data?this.data.description:'',[Validators.required,Validators.minLength(5),Validators.maxLength(100)]],
-      inputs:this.fb.array([
-        this.fb.control('')
-      ])
-
+  createForm() {
+    this.taskFb = this.fb.group({
+      editNameTask: [this.data ? this.data.name : '', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      editDescriptionTask: [this.data ? this.data.description : '', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      inputs: this.fb.array([])
     });
-    
+    if (this.data.addingshit) {
+      for (const input of this.data.addingshit) {
+        this.formarray.push(new FormControl(input, Validators.required))
+      }
+    }
   }
 
 }

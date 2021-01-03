@@ -10,12 +10,14 @@
       <mat-label>Description Task</mat-label>
       <textarea matInput formControlName="editDescriptionTask"></textarea>
     </mat-form-field>
-    <div *ngFor="let control of formarray.controls; index as i">
+    <div formArrayName="inputs">
+    <div *ngFor="let control of this.taskFb.controls['inputs']['controls']; index as i">
       <mat-form-field >
-        <mat-label>Control {{i}}</mat-label>
-        <input matInput  [formControl]="formarray.controls[i]" value=""/>
+        <mat-label>Control </mat-label>
+        <input matInput formControlName="{{i}}" />
       </mat-form-field>
     </div>
+  </div>
     <!-- <span>{{formarr.controls| json}}</span> -->
   </div>
   <div mat-dialog-actions>

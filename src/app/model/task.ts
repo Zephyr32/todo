@@ -4,7 +4,9 @@ export class Task{
     public description:string;
     public addingshit:[];
     constructor(init?: Partial<Task>){
+        this.addingshit=[];
         init ? Object.assign(this, init) : this.clear();
+        
     }
     editName(name:string){
         this.name=name;

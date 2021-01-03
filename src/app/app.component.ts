@@ -52,8 +52,10 @@ export class AppComponent {
             id: this.Tasks.length+ 1,
             name: result.name,
             description: result.description,
+            addingshit:result.addingshit,
           }));
         }
+        this.etask=null;
       });
   }
 }
