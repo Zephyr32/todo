@@ -1,17 +1,17 @@
 export class Task{
     public id?:number;
-    public name:string;
+    public title:string;
     public description:string;
     public addingshit:[];
     constructor(init?: Partial<Task>){
         this.addingshit=[];
         init ? Object.assign(this, init) : this.clear();
         if(!this.description){
-            this.description='some default description'
+            this.description='some default description';
         }
     }
-    editName(name:string){
-        this.name=name;
+    edittitle(title:string){
+        this.title=title;
     }
     editDescriptions(description:string){
         this.description=description;
@@ -21,7 +21,7 @@ export class Task{
         return this;
     }
     public clear() {
-        this.name = null;
+        this.title = null;
         this.description = null;
       }
 

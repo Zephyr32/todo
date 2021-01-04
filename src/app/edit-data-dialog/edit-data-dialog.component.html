@@ -4,26 +4,37 @@
     <p>Edit data</p>
     <mat-form-field>
       <mat-label>Name Task</mat-label>
-      <input matInput formControlName="editNameTask">
+      <input matInput formControlName="editTitleTask">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Description Task</mat-label>
       <textarea matInput formControlName="editDescriptionTask"></textarea>
     </mat-form-field>
-    <div formArrayName="inputs">
-    <div *ngFor="let control of this.taskFb.controls['inputs']['controls']; index as i">
-      <mat-form-field >
+   
+    <div formArrayName="groupArray">
+    <div *ngFor="let control of formGrouparray['controls']; index as i" [formGroupName]="i">
+      <mat-form-field>
         <mat-label>Control </mat-label>
-        <input matInput formControlName="{{i}}" />
+        <input matInput formControlName="first" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Control </mat-label>
+        <input matInput formControlName="second" />
       </mat-form-field>
       <button class="button" (click)="delInput(i)" >X</button>
+      <span ></span> 
     </div>
+    <span>{{formGrouparray.value| json}}</span> 
+  </div>
     <div>
       <button mat-raised-button class="button" (click)="addInput()">MOREE</button>
     </div>
+    <div>
+      <button mat-raised-button class="button" (click)="addGroupInput()">MOREMOREE</button>
+    </div>
   </div>
     <!-- <span>{{formarr.controls| json}}</span> -->
-  </div>
+  
   <div mat-dialog-actions>
     <button mat-raised-button (click)="dialogRef.close()">No Thanks</button>
     <button mat-raised-button (click)="onClick()" [disabled]="!taskFb.valid">Ok</button>

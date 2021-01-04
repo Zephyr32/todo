@@ -6,6 +6,9 @@
     padding-inline-end: 25px;
     padding-inline-start: 25px;
 }
+.content{
+    width: 80%;
+}
 .button{
     margin: 5px;
 }
