@@ -14,17 +14,18 @@
     <div formArrayName="groupArray">
     <div *ngFor="let control of formGrouparray['controls']; index as i" [formGroupName]="i">
       <mat-form-field>
-        <mat-label>Control{{control}}</mat-label>
+        <mat-label>Control</mat-label>
         <input matInput formControlName="first" />
-        <span>{{control.errors}}</span>
       </mat-form-field>
+      <div class="alert-danger" *ngIf="control.controls.first.errors?.required&&control.controls.first.touched">заполни поле пожалста</div>
       <mat-form-field>
         <mat-label>Control </mat-label>
         <input matInput formControlName="second" />
       </mat-form-field>
+      <div class="alert-danger" *ngIf="control.controls.second.errors?.required&&control.controls.second.touched">заполни поле пожалста</div>
       <button class="button" (click)="delInput(i)" >X</button>
     </div>
-    <span>{{formGrouparray.value| json}}</span> 
+    <span></span> 
   </div>
     <div>
       <button mat-raised-button class="button" (click)="addInput()">MOREE</button>

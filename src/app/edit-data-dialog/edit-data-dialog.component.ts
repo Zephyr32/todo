@@ -61,7 +61,10 @@ export class EditDataDialogComponent implements OnInit {
       editDescriptionTask: [this.data ? this.data.description : '', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       inputs: this.fb.array([]),
       groupArray: this.fb.array([
-        
+        // this.fb.group({
+        //   first:new FormControl('', Validators.required),
+        //   second:new FormControl('', Validators.required)
+        // })
       ]),
     });
     console.log(this.formGrouparray);
