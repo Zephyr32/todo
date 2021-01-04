@@ -16,13 +16,17 @@
         <mat-label>Control </mat-label>
         <input matInput formControlName="{{i}}" />
       </mat-form-field>
+      <button class="button" (click)="delInput(i)" >X</button>
+    </div>
+    <div>
+      <button mat-raised-button class="button" (click)="addInput()">MOREE</button>
     </div>
   </div>
     <!-- <span>{{formarr.controls| json}}</span> -->
   </div>
   <div mat-dialog-actions>
-    <button mat-button (click)="dialogRef.close()">No Thanks</button>
-    <button mat-button (click)="onClick()" [disabled]="!taskFb.valid">Ok</button>
-    <button mat-button (click)="addInput()">MOREE</button>
+    <button mat-raised-button (click)="dialogRef.close()">No Thanks</button>
+    <button mat-raised-button (click)="onClick()" [disabled]="!taskFb.valid">Ok</button>
+
   </div>
 </form>

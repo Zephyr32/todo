@@ -51,6 +51,7 @@ import { EditDataDialogComponent } from './edit-data-dialog/edit-data-dialog.com
 import { TaskComponent } from './task/task.component';
 import { ListComponent } from './list/list.component';
 import { FilterPipe } from './model/pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { FilterPipe } from './model/pipe';
     FilterPipe
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

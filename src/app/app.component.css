@@ -15,7 +15,7 @@ html,body{
     align-items:center;
     justify-content:left;
     width: 100%;
-    background-color: azure;
+    background-color:#f5f5f569 
 }
 mat-list{
     margin-top: 50px;

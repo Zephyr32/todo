@@ -1,6 +1,6 @@
 <div class="content">
   <h1>TODO LIST</h1>
-  <button mat-fab color="primary" (click)="openDialog()">
+  <button mat-raised-button color="warn" (click)="openDialog()">
     <mat-icon>add</mat-icon>
   </button>
   <div class="control">
@@ -9,8 +9,11 @@
       <mat-label>Search</mat-label>
       <input matInput placeholder="" formControlName="search" >
     </mat-form-field>
-      <button mat-mini-fab color="primary" aria-label="Example icon button with a home icon">
+      <button mat-raised-button (click)="getDataFromJSONplaceholder()" color="warn" aria-label="Example icon button with a home icon">
         <mat-icon>search</mat-icon>
+      </button>
+      <button mat-raised-button (click)="removealldata()" color="warn" aria-label="Example icon button with a home icon">
+        <mat-icon>delete</mat-icon>
       </button>
     </form>
   </div>

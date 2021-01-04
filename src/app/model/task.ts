@@ -6,7 +6,9 @@ export class Task{
     constructor(init?: Partial<Task>){
         this.addingshit=[];
         init ? Object.assign(this, init) : this.clear();
-        
+        if(!this.description){
+            this.description='some default description'
+        }
     }
     editName(name:string){
         this.name=name;

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EditDataDialogComponent } from './edit-data-dialog/edit-data-dialog.component';
 import { Task } from './model/task';
+import { HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -15,24 +16,43 @@ export class AppComponent {
   search:string;
   fg:FormGroup;
   
-  constructor(public dialog: MatDialog,fb:FormBuilder) {
+  constructor(public dialog: MatDialog,fb:FormBuilder,private http: HttpClient) {
+    
     this.fg=fb.group({
       search:['']
     });
     this.fg.get('search').valueChanges.subscribe((value)=>{
       this.search=value;
     });
+    this.getTaskFromLocalStorage();
   }
 
   title = 'todo';
 
   removeTask(task) {
     this.Tasks.splice(this.Tasks.indexOf(task), 1);
+    this.setTaskFromLocalStorage();
+  }
+  getTaskFromLocalStorage(){
+    if(localStorage.getItem('task'))
+    this.Tasks=JSON.parse(localStorage.getItem('task'));
+  }
+  setTaskFromLocalStorage(){
+    localStorage.setItem('task',JSON.stringify(this.Tasks));
   }
 
   editTask(task) {
     this.etask = task;
     this.openDialog();
+  }
+  removealldata(){
+    this.Tasks.splice(0,this.Tasks.length);
+    this.setTaskFromLocalStorage();
+  }
+  getDataFromJSONplaceholder(){
+    //fetch('https://jsonplaceholder.typicode.com/todos').then(response=>response.json()).then(json=>console.log(json));
+    this.http.get('https://jsonplaceholder.typicode.com/todos').subscribe((data:Task[]) => console.log(data));
+
   }
 
   
@@ -56,6 +76,7 @@ export class AppComponent {
           }));
         }
         this.etask=null;
+        this.setTaskFromLocalStorage();
       });
   }
 }

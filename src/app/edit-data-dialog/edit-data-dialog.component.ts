@@ -20,7 +20,10 @@ export class EditDataDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA)
     public data: Task
   ) {
-
+    
+  }
+  delInput(index){
+      this.formarray.removeAt(index)
   }
   addInput() {
     this.formarray.push(new FormControl('', Validators.required));
