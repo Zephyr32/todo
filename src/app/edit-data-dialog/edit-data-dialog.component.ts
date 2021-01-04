@@ -36,7 +36,7 @@ export class EditDataDialogComponent implements OnInit {
   }
   get formarray() { return this.taskFb.get('inputs') as FormArray; }
   get formGrouparray() { return this.taskFb.get('groupArray') as FormArray; }
-  get isValid() { return this.formGrouparray.controls[].valid; }
+  get isValid() { return this.formGrouparray.controls; }
   onClick(): void {
     if (this.taskFb.get('editTitleTask').valid && this.taskFb.get('editDescriptionTask').valid) {
       this.data.title = this.taskFb.value['editTitleTask'];

@@ -14,15 +14,15 @@
     <div formArrayName="groupArray">
     <div *ngFor="let control of formGrouparray['controls']; index as i" [formGroupName]="i">
       <mat-form-field>
-        <mat-label>Control </mat-label>
+        <mat-label>Control{{control}}</mat-label>
         <input matInput formControlName="first" />
+        <span>{{control.errors}}</span>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Control </mat-label>
         <input matInput formControlName="second" />
       </mat-form-field>
       <button class="button" (click)="delInput(i)" >X</button>
-      <span ></span> 
     </div>
     <span>{{formGrouparray.value| json}}</span> 
   </div>
