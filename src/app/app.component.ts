@@ -7,8 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { filter, take, map } from 'rxjs/operators';
 import { IAppState } from './store/state/app.state';
 import { select, Store } from '@ngrx/store';
-import {selectTaskList} from 'src/app/store/selectors/task.selectors';
-import { GetTasks,GetTasksSuccess,GetTask,GetTaskSuccess, DeleteTask, EditTask, } from './store/actions/task.actions';
+import { selectTaskList } from 'src/app/store/selectors/task.selectors';
+import { GetTasks, GetTasksSuccess, GetTask, GetTaskSuccess, DeleteTask, EditTask, DeleteTasks, } from './store/actions/task.actions';
 
 
 @Component({
@@ -23,19 +23,17 @@ export class AppComponent {
   fg: FormGroup;
   title = 'todo';
   //todo
-  //выпилять локалсторейдж
   //переписать все на диспатчи
-  //чекбоксы для выбора и удаления тасок
 
   constructor(
     public store: Store<IAppState>,
     public dialog: MatDialog,
-    public fb: FormBuilder, 
-    ) {
+    public fb: FormBuilder,
+  ) {
 
     this.fg = fb.group({
       search: [''],
-      Select:['']
+      Select: ['']
     });
     this.fg.get('search').valueChanges.subscribe((value) => {
       this.search = value;
@@ -43,28 +41,29 @@ export class AppComponent {
     this.store.dispatch(new GetTasks());
   }
   onChange() {
-    this.getDataFromJSONplaceholder(); 
+    this.getDataFromJSONplaceholder();
   }
-  removeTask(task:Task) {
+  removeTask(task: Task) {
     this.store.dispatch(new DeleteTask(task.id));
   }
-  editTask(task:Task) {
+  editTask(task: Task) {
     this.store.dispatch(new EditTask(task))
     this.openDialog();
   }
   removealldata() {
-    // this.store.dispatch(new DeleteTasks());
+    this.store.dispatch(new DeleteTasks());
   }
-  
+
   getDataFromJSONplaceholder() {
     this.store.pipe(select(selectTaskList))
-    .subscribe(
-      (tasks:Task[])=>{
-        this.Tasks=tasks?.filter((value,index)=>{
-          return this.fg.get('Select').value? index<this.fg.get('Select').value:10
+      .subscribe(
+        (tasks: Task[]) => {
+          this.Tasks = tasks?.filter((value, index) => {
+            return this.fg.get('Select').value ? index < this.fg.get('Select').value : 10
+          }
+          )
         }
-        )}
-        );
+      );
   }
 
   openDialog() {

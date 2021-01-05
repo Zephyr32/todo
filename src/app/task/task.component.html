@@ -1,6 +1,7 @@
   <div class="task-content">
     <div>
       <mat-card-content class="task-decription">
+        <mat-checkbox (change)="change($event)" ></mat-checkbox>
         <span matLine>{{task.id}}</span>
       </mat-card-content>   
     </div>
