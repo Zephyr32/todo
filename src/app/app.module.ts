@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import {A11yModule} from '@angular/cdk/a11y';
@@ -52,6 +53,12 @@ import { TaskComponent } from './task/task.component';
 import { ListComponent } from './list/list.component';
 import { FilterPipe } from './model/pipe';
 import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './store/reducers';
+import { environment } from 'src/environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { TasksEffects } from './store/efects/task.effects';
+
 
 @NgModule({
   declarations: [
@@ -59,7 +66,7 @@ import { HttpClientModule } from '@angular/common/http';
     EditDataDialogComponent,
     TaskComponent,
     ListComponent,
-    FilterPipe
+    FilterPipe,
   ],
   imports: [
     HttpClientModule,
@@ -111,6 +118,13 @@ import { HttpClientModule } from '@angular/common/http';
     OverlayModule,
     PortalModule,
     ScrollingModule,
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument ({
+      maxAge: 25, // Сохраняет последние 25 состояний
+      logOnly: environment.production, // Ограничить расширение только режимом журнала
+      }),
+      EffectsModule.forRoot([TasksEffects, ])
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

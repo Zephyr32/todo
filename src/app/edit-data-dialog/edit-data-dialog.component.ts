@@ -12,6 +12,7 @@ import { Task } from '../model/task';
 export class EditDataDialogComponent implements OnInit {
   taskFb: FormGroup;
   butt: MatButton;
+  patternForSymbol="^[a-zA-Z0-9_]+$";
 
 
   constructor(
@@ -61,18 +62,18 @@ export class EditDataDialogComponent implements OnInit {
       editDescriptionTask: [this.data ? this.data.description : '', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       inputs: this.fb.array([]),
       groupArray: this.fb.array([
-        // this.fb.group({
-        //   first:new FormControl('', Validators.required),
-        //   second:new FormControl('', Validators.required)
-        // })
+        this.fb.group({
+          first:new FormControl('wdwa', [Validators.required,Validators.minLength(2),Validators.pattern(this.patternForSymbol)]),
+          second:new FormControl('wwww', [Validators.required,Validators.minLength(2),Validators.pattern(this.patternForSymbol)])
+        })
       ]),
     });
     console.log(this.formGrouparray);
     if (this.data.addingshit) {
       for (const input of this.data.addingshit) {
         this.formGrouparray.push(this.fb.group({
-          first:new FormControl(input['first'], Validators.required),
-          second:new FormControl(input['second'], Validators.required)
+          first:new FormControl(input['first'], [Validators.required,Validators.minLength(2),Validators.pattern(this.patternForSymbol)]),
+          second:new FormControl(input['second'], [Validators.required,Validators.minLength(2),Validators.pattern(this.patternForSymbol)])
         }))
       }
     }

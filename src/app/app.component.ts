@@ -5,6 +5,11 @@ import { EditDataDialogComponent } from './edit-data-dialog/edit-data-dialog.com
 import { Task } from './model/task';
 import { HttpClient } from '@angular/common/http';
 import { filter, take, map } from 'rxjs/operators';
+import { IAppState } from './store/state/app.state';
+import { select, Store } from '@ngrx/store';
+import {selectTaskList} from 'src/app/store/selectors/task.selectors';
+import { GetTasks,GetTasksSuccess,GetTask,GetTaskSuccess, DeleteTask, EditTask, } from './store/actions/task.actions';
+
 
 @Component({
   selector: 'app-root',
@@ -12,67 +17,54 @@ import { filter, take, map } from 'rxjs/operators';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  Tasks: Task[] = [];
+  Tasks: Task[];
   etask: Task;
   search: string;
   fg: FormGroup;
+  title = 'todo';
+  //todo
+  //выпилять локалсторейдж
+  //переписать все на диспатчи
+  //чекбоксы для выбора и удаления тасок
 
-  constructor(public dialog: MatDialog, fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    public store: Store<IAppState>,
+    public dialog: MatDialog,
+    public fb: FormBuilder, 
+    ) {
 
     this.fg = fb.group({
-      search: ['']
+      search: [''],
+      Select:['']
     });
     this.fg.get('search').valueChanges.subscribe((value) => {
       this.search = value;
     });
-    this.getTaskFromLocalStorage();
+    this.store.dispatch(new GetTasks());
   }
-  onChange(count) {
-    this.getDataFromJSONplaceholder(count);
+  onChange() {
+    this.getDataFromJSONplaceholder(); 
   }
-
-  title = 'todo';
-
-  removeTask(task) {
-    this.Tasks.splice(this.Tasks.indexOf(task), 1);
-    this.setTaskFromLocalStorage();
+  removeTask(task:Task) {
+    this.store.dispatch(new DeleteTask(task.id));
   }
-  getTaskFromLocalStorage() {
-    if (localStorage.getItem('task'))
-      this.Tasks = JSON.parse(localStorage.getItem('task'));
-  }
-  setTaskFromLocalStorage() {
-    localStorage.setItem('task', JSON.stringify(this.Tasks));
-  }
-
-  editTask(task) {
-    this.etask = task;
+  editTask(task:Task) {
+    this.store.dispatch(new EditTask(task))
     this.openDialog();
   }
   removealldata() {
-    this.Tasks.splice(0, this.Tasks.length);
-    this.setTaskFromLocalStorage();
+    // this.store.dispatch(new DeleteTasks());
   }
   
-  getDataFromJSONplaceholder(count?: number) {
-    //fetch('https://jsonplaceholder.typicode.com/todos').then(response=>response)
-    this.http.get('https://jsonplaceholder.typicode.com/todos/')
-      .pipe(
-        map((value: Array<any>) => {
-          return value.map((val: { id: number, title: string }) => {
-            return new Task({
-              id: val.id,
-              title: val.title
-            })
-          }).filter((v, i) => {
-            return i < (count ? count : 20)
-          }
-          );
-
-        })).subscribe((data: Task[]) => this.Tasks.push.apply(this.Tasks, data), () => { }, () => {
-          this.setTaskFromLocalStorage();
-        });
-
+  getDataFromJSONplaceholder() {
+    this.store.pipe(select(selectTaskList))
+    .subscribe(
+      (tasks:Task[])=>{
+        this.Tasks=tasks?.filter((value,index)=>{
+          return this.fg.get('Select').value? index<this.fg.get('Select').value:10
+        }
+        )}
+        );
   }
 
   openDialog() {
@@ -94,7 +86,6 @@ export class AppComponent {
           }));
         }
         this.etask = null;
-        this.setTaskFromLocalStorage();
       });
   }
 }

@@ -9,22 +9,21 @@
       <mat-label>Search</mat-label>
       <input matInput placeholder="" formControlName="search" >
     </mat-form-field>
+    <div>
+      <mat-form-field class="example-full-width"> 
+        <mat-label>Select to download todo</mat-label>
+        <mat-select matNativeControl  (selectionChange)="onChange()" formControlName="Select">
+          <mat-option value='10'>10</mat-option>
+          <mat-option value='20'>20</mat-option>
+          <mat-option value='30'>30</mat-option>
+          <mat-option value='40'>40</mat-option>
+          <mat-option value='50'>50</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     </form>
   </div>
   <div class="control">
-    <mat-form-field class="example-full-width"> 
-      <mat-label>Select to download todo</mat-label>
-      <mat-select matNativeControl value="" (selectionChange)="onChange($event.value)">
-        <mat-option value='10'>10</mat-option>
-        <mat-option value='20'>20</mat-option>
-        <mat-option value='30'>30</mat-option>
-        <mat-option value='40'>40</mat-option>
-        <mat-option value='50'>50</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button (click)="getDataFromJSONplaceholder()" color="warn" aria-label="Example icon button with a home icon">
-      <mat-icon>download</mat-icon>
-    </button>
     <button mat-raised-button (click)="removealldata()" color="warn" aria-label="Example icon button with a home icon">
       <mat-icon>delete</mat-icon>
     </button>

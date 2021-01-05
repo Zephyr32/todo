@@ -18,14 +18,18 @@
         <input matInput formControlName="first" />
       </mat-form-field>
       <div class="alert-danger" *ngIf="control.controls.first.errors?.required&&control.controls.first.touched">заполни поле пожалста</div>
+      <div class="alert-danger" *ngIf="control.controls.first.errors?.minlength">поле должно содержать минимум 2 символа</div>
+      <div class="alert-danger" *ngIf="control.controls.first.errors?.pattern">введены неразрешенные символы</div>
       <mat-form-field>
         <mat-label>Control </mat-label>
         <input matInput formControlName="second" />
       </mat-form-field>
       <div class="alert-danger" *ngIf="control.controls.second.errors?.required&&control.controls.second.touched">заполни поле пожалста</div>
+      <div class="alert-danger" *ngIf="control.controls.second.errors?.minlength">поле должно содержать минимум 2 символа</div>
+      <div class="alert-danger" *ngIf="control.controls.second.errors?.pattern">введены неразрешенные символы</div>
       <button class="button" (click)="delInput(i)" >X</button>
     </div>
-    <span></span> 
+    <span>{{formGrouparray.value| json}}</span> 
   </div>
     <div>
       <button mat-raised-button class="button" (click)="addInput()">MOREE</button>
