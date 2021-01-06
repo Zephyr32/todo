@@ -21,6 +21,6 @@ export const editTask=createAction('[Task] EditTask',props<{task:Task}>());
 
 export const editCheckTask=createAction('[Task] EditCheckTask',props<{id:number}>());
 
-export const clearStore=createAction('[Task] clearTasks');
+export const Ta=createAction('[Task] clearTasks');
 
 

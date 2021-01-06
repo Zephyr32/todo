@@ -14,3 +14,5 @@ export const initialTaskState:ITaskState={
     selectedTask:null,
     editTask:null,
 }
+awdawdwadg
+//перенести это в редьюс
