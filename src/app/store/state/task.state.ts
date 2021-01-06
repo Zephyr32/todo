@@ -3,13 +3,14 @@ import {Task}  from "../../model/task";
 
 export interface ITaskState{
     tasks:Task[];
-    deletedTask:Task[]
     selectedTask:Task;
     editTask:Task;
+    editedId:number;
 }
+
 export const initialTaskState:ITaskState={
     tasks:null,
+    editedId:null,
     selectedTask:null,
     editTask:null,
-    deletedTask: new Array<Task>(),
 }

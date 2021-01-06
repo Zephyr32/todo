@@ -3,15 +3,16 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { JsonPlaceholderService} from '../../services/jsonPlaceholderService'
+import * as action from '../actions/task.actions'
 
 @Injectable()
 export class TasksEffects {
  
   loadTasks$ = createEffect(() => this.actions$.pipe(
-    ofType('[Task] Load Tasks'),
+    ofType(action.getTasks),
     mergeMap(() => this.tasksService.getData()
       .pipe(
-        map(tasks => ({ type: '[Task] Load Tasks Success', payload: tasks })),
+        map(tasks => (action.setTasks({tasks:tasks}))),
         catchError(() => EMPTY)
       ))
     )

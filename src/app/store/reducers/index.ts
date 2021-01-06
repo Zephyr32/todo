@@ -8,14 +8,14 @@ import {
 } from '@ngrx/store';
 import { environment } from '../../../environments/environment';
 import { IAppState } from '../state/app.state';
-import { taskReducers } from './task.reducer'
+import { taskReducer } from './task.reducer'
 
 export interface State {
 
 }
 
 export const reducers: ActionReducerMap<IAppState,any> = {
-  tasks:taskReducers,
+  tasks:taskReducer,
 };
 
 

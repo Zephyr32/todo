@@ -13,12 +13,14 @@ export const selectSelectedTask = createSelector(
     selectTasks,
     (state:ITaskState)=>state.selectedTask
 );
+export const selectLenghtTask = createSelector(
+    selectTasks,
+    (state:ITaskState)=>state.tasks.length
+);
 
 export const selectEditTask = createSelector(
     selectTasks,
-    (state:ITaskState)=>state.editTask
-);
-export const selectSelectedDeleteTask = createSelector(
-    selectTasks,
-    (state:ITaskState)=>state.deletedTask
+    (state:ITaskState)=>state.tasks
+    .find(val=>val.id==state.editedId
+    )
 );

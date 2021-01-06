@@ -1,90 +1,78 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EditDataDialogComponent } from './edit-data-dialog/edit-data-dialog.component';
 import { Task } from './model/task';
 import { HttpClient } from '@angular/common/http';
-import { filter, take, map } from 'rxjs/operators';
+import { filter, take, map, takeUntil } from 'rxjs/operators';
 import { IAppState } from './store/state/app.state';
 import { select, Store } from '@ngrx/store';
 import { selectTaskList } from 'src/app/store/selectors/task.selectors';
-import { GetTasks, GetTasksSuccess, GetTask, GetTaskSuccess, DeleteTask, EditTask, DeleteTasks, } from './store/actions/task.actions';
+import * as action from "./store/actions/task.actions";
+import { EditDataDialogService } from './edit-data-dialog/edit-data-dialog.service';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [EditDataDialogService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  private asdasdasd = new EventEmitter();
+
   Tasks: Task[];
   etask: Task;
   search: string;
   fg: FormGroup;
   title = 'todo';
-  //todo
-  //переписать все на диспатчи
+ 
 
   constructor(
     public store: Store<IAppState>,
-    public dialog: MatDialog,
     public fb: FormBuilder,
+    public editDataDialogService: EditDataDialogService
   ) {
 
     this.fg = fb.group({
       search: [''],
       Select: ['']
     });
-    this.fg.get('search').valueChanges.subscribe((value) => {
+    this.fg.get('search')
+    .valueChanges
+    .subscribe((value) => {
       this.search = value;
     });
-    this.store.dispatch(new GetTasks());
+    this.store.dispatch(action.getTasks());
+
   }
+  ngOnInit(): void {
+    this.getDataFromStore();
+  }
+
+
+  getDataFromStore() {
+    this.store.pipe(
+      select(selectTaskList),
+      takeUntil(this.asdasdasd)
+    )
+    .subscribe((tasks: Task[]) => {
+        this.Tasks = tasks?.filter((value, index) => {
+          return this.fg.get('Select').value ? index < this.fg.get('Select').value : 10
+        })
+    });
+  }
+
   onChange() {
-    this.getDataFromJSONplaceholder();
+    this.getDataFromStore();
   }
-  removeTask(task: Task) {
-    this.store.dispatch(new DeleteTask(task.id));
+
+  editTask() {
+    this.editDataDialogService.open()
   }
-  editTask(task: Task) {
-    this.store.dispatch(new EditTask(task))
-    this.openDialog();
-  }
+
   removealldata() {
-    this.store.dispatch(new DeleteTasks());
-  }
-
-  getDataFromJSONplaceholder() {
-    this.store.pipe(select(selectTaskList))
-      .subscribe(
-        (tasks: Task[]) => {
-          this.Tasks = tasks?.filter((value, index) => {
-            return this.fg.get('Select').value ? index < this.fg.get('Select').value : 10
-          }
-          )
-        }
-      );
-  }
-
-  openDialog() {
-    this.dialog.open(EditDataDialogComponent, {
-      width: '400px',
-      data: this.etask ? this.etask : new Task()
-    })
-      .afterClosed()
-      .subscribe(result => {
-        if (result && result.id) {
-          this.Tasks = this.Tasks.filter((task) => task.id != result.id);
-          this.Tasks.push(result);
-        } else if (result) {
-          this.Tasks.push(new Task({
-            id: this.Tasks.length + 1,
-            title: result.title,
-            description: result.description,
-            addingshit: result.addingshit,
-          }));
-        }
-        this.etask = null;
-      });
+    this.Tasks = this.Tasks.filter(val => !val.checked);
+    this.store.dispatch(action.removeSelectTasks());
   }
 }

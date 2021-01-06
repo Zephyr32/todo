@@ -3,8 +3,10 @@ export class Task{
     public title:string;
     public description:string;
     public addingshit:[];
+    public checked:boolean;
     constructor(init?: Partial<Task>){
         this.addingshit=[];
+        this.checked=false;
         init ? Object.assign(this, init) : this.clear();
         if(!this.description){
             this.description='some default description';
@@ -25,10 +27,4 @@ export class Task{
         this.description = null;
       }
 
-}
-export interface ITask{
-     id?:number;
-     title:string;
-     description:string;
-     addingshit:[];
 }

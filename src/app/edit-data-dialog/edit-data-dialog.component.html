@@ -11,7 +11,7 @@
       <textarea matInput formControlName="editDescriptionTask"></textarea>
     </mat-form-field>
    
-    <div formArrayName="groupArray">
+    <div *ngIf="formGrouparray['controls']" formArrayName="groupArray">
     <div *ngFor="let control of formGrouparray['controls']; index as i" [formGroupName]="i">
       <mat-form-field>
         <mat-label>Control</mat-label>
@@ -29,11 +29,7 @@
       <div class="alert-danger" *ngIf="control.controls.second.errors?.pattern">введены неразрешенные символы</div>
       <button class="button" (click)="delInput(i)" >X</button>
     </div>
-    <span>{{formGrouparray.value| json}}</span> 
   </div>
-    <div>
-      <button mat-raised-button class="button" (click)="addInput()">MOREE</button>
-    </div>
     <div>
       <button mat-raised-button class="button" (click)="addGroupInput()">MOREMOREE</button>
     </div>
