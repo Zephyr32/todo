@@ -33,7 +33,8 @@ export class EditDataDialogComponent implements OnInit, OnDestroy {
   get formArray(): FormArray { return this.taskFormGroup.get('inputs') as FormArray; }
   get formGroupArray(): FormArray { return this.taskFormGroup.get('groupArray') as FormArray; }
   get isValid(): AbstractControl[] { return this.formGroupArray.controls; }
-
+  get controlTitle(): AbstractControl { return this.taskFormGroup.get('editTitleTask') as FormControl; }
+  get controlDescription(): AbstractControl { return this.taskFormGroup.get('editDescriptionTask') as FormControl; }
 
   constructor(
     public store: Store<IAppState>,
@@ -94,9 +95,8 @@ export class EditDataDialogComponent implements OnInit, OnDestroy {
     console.log(this.taskFormGroup);
   }
 
-  // todo
-  setForm(): void{
 
+  setForm(): void{
     for (const input of this.taskFromStore.addingShit) {
       this.formGroupArray.push(this.formBuilder.group({
         firstControl: new FormControl(
@@ -138,17 +138,16 @@ export class EditDataDialogComponent implements OnInit, OnDestroy {
     }));
   }
 
-  // todo
   finishDialog(): void {
     if (this.taskFormGroup.get('editTitleTask').valid && this.taskFormGroup.get('editDescriptionTask').valid) {
       const newTask: Task = new Task( {
-          id : this.taskFromStore ? this.taskFromStore.id : undefined,
+          id : this.taskFromStore ? this.taskFromStore.id : this.tasksLength + 1,
           title : this.taskFormGroup.value.editTitleTask,
           description : this.taskFormGroup.value.editDescriptionTask,
           addingShit : this.taskFormGroup.value.groupArray,
           checked:  this.taskFromStore ? this.taskFromStore.checked : false,
         });
-      if (newTask && newTask.id) {
+      if (this.taskFromStore && this.taskFromStore.id) {
         this.store.dispatch(action.editTask({ task: newTask }));
       } else {
         this.store.dispatch(action.addTask({ task: newTask }

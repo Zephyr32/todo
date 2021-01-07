@@ -4,16 +4,14 @@ import { Task } from './task';
 @Pipe({name: 'pipefilter'})
 export class FilterPipe implements PipeTransform {
 
- transform(items:Task[], searchText:string){
-   if(!items){
-     return[];
+ transform(tasks: Task[], searchText: string): Task[]{
+   if (tasks && searchText) {
+     return tasks.filter(it => {
+       return it.title.toLocaleLowerCase().includes(searchText);
+     });
    }
-   if(!searchText)
-   {
-     return items;
+   else{
+     return tasks;
    }
-   return items.filter(it=>{
-     return it.title.toLocaleLowerCase().includes(searchText);
-   });
     }
 }

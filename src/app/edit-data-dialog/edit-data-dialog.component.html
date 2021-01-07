@@ -4,13 +4,16 @@
     <p>Edit data</p>
     <mat-form-field>
       <mat-label>Name Task</mat-label>
-      <input matInput formControlName="editTitleTask" #edit>
+      <input matInput formControlName="editTitleTask" >
     </mat-form-field>
+    <ng-container
+    *ngTemplateOutlet="validationMessageTemplate; context:{control: controlTitle }"></ng-container>
     <mat-form-field>
       <mat-label>Description Task</mat-label>
       <textarea matInput formControlName="editDescriptionTask"></textarea>
     </mat-form-field>
-
+    <ng-container
+    *ngTemplateOutlet="validationMessageTemplate; context:{control: controlDescription }"></ng-container>
     <div *ngIf="formGroupArray['controls']" formArrayName="groupArray">
       <div *ngFor="let group of formGroupArray['controls']; index as i" [formGroupName]="i">
         <mat-form-field>
@@ -38,9 +41,10 @@
   </div>
 </form>
 
-
 <ng-template #validationMessageTemplate let-control="control" >
+  <div class="messages">
   <div class="alert-danger" *ngIf="control?.errors?.required">{{validationMessage.required}}</div>
-  <div class="alert-danger" *ngIf="control?.errors?.minLength">{{validationMessage.minLength}}</div>
+  <div class="alert-danger" *ngIf="control?.errors?.minlength?.actualLength">{{validationMessage.minLength}}</div>
   <div class="alert-danger" *ngIf="control?.errors?.pattern">{{validationMessage.pattern}}</div>
+  </div>
   </ng-template>

@@ -12,7 +12,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatListModule} from '@angular/material/list';
 import {MatSelectModule} from '@angular/material/select';
-import{BrowserAnimationsModule}from "@angular/platform-browser/animations";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { EditDataDialogComponent } from './edit-data-dialog/edit-data-dialog.component';
 import { TaskComponent } from './list/task/task.component';
 import { ListComponent } from './list/list.component';
@@ -28,10 +28,10 @@ import { TasksEffects } from './store/efects/task.effects';
 @NgModule({
   declarations: [
     AppComponent,
-    EditDataDialogComponent,
     TaskComponent,
     ListComponent,
     FilterPipe,
+    EditDataDialogComponent,
   ],
   imports: [
     HttpClientModule,
@@ -54,7 +54,6 @@ import { TasksEffects } from './store/efects/task.effects';
       logOnly: environment.production, // Ограничить расширение только режимом журнала
       }),
       EffectsModule.forRoot([TasksEffects, ])
-    
   ],
   providers: [],
   bootstrap: [AppComponent]
