@@ -11,7 +11,6 @@ import { Task } from '../model/task';
 export class ListComponent implements OnInit {
   @Input() search:string;
   @Input() Tasks:Task[];
-  @Output() edit: EventEmitter<any> = new EventEmitter();
   constructor() { }
 
   ngOnInit(): void {

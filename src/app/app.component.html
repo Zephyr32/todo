@@ -1,18 +1,17 @@
 <div class="content">
   <h1>TODO LIST</h1>
-  <button mat-raised-button color="warn" (click)="editDataDialogService.open()">
+  <button mat-raised-button color="warn" (click)="editDataDialogService.openDialog()">
     <mat-icon>add</mat-icon>
   </button>
-  <div class="control">
-    <form [formGroup]="fg">
+  <form [formGroup]="formGroup">
     <mat-form-field class="example-full-width">
       <mat-label>Search</mat-label>
-      <input matInput placeholder="" formControlName="search" >
+      <input matInput placeholder="" formControlName="search">
     </mat-form-field>
     <div>
-      <mat-form-field class="example-full-width"> 
+      <mat-form-field class="example-full-width">
         <mat-label>Select to download todo</mat-label>
-        <mat-select matNativeControl  (selectionChange)="onChange()" formControlName="Select">
+        <mat-select matNativeControl (selectionChange)="selectTasks()" formControlName="Select">
           <mat-option value='10'>10</mat-option>
           <mat-option value='20'>20</mat-option>
           <mat-option value='30'>30</mat-option>
@@ -21,12 +20,11 @@
         </mat-select>
       </mat-form-field>
     </div>
-    </form>
-  </div>
-  <div class="control">
-    <button mat-raised-button (click)="removealldata()" color="warn" aria-label="Example icon button with a home icon">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </div>
-  <app-list class="list" [Tasks]="Tasks" [search]="search"(edit)="editTask()"></app-list>
+  </form>
+
+  <button mat-raised-button (click)="removeSelectData()" color="warn"
+          aria-label="Example icon button with a home icon">
+    <mat-icon>delete</mat-icon>
+  </button>
+  <app-list class="list" [Tasks]="Tasks" [search]="search"></app-list>
 </div>

@@ -1,26 +1,25 @@
 import { createSelector } from '@ngrx/store';
-import { IAppState } from '../state/app.state';
-import { ITaskState } from '../state/task.state';
+import {IAppState, ITaskState} from '../reducers/task.reducer';
 
-const selectTasks = (state:IAppState)=>state.tasks;
+const selectTasks = ( state: IAppState ) => state.tasks;
 
 export const selectTaskList = createSelector(
     selectTasks,
-    (state:ITaskState)=>state.tasks
+    (state: ITaskState ) => state.tasks
 );
 
 export const selectSelectedTask = createSelector(
     selectTasks,
-    (state:ITaskState)=>state.selectedTask
+    (state: ITaskState ) => state.selectedTask
 );
-export const selectLenghtTask = createSelector(
+export const selectLengthTask = createSelector(
     selectTasks,
-    (state:ITaskState)=>state.tasks.length
+    (state: ITaskState ) => state.tasks.length
 );
 
 export const selectEditTask = createSelector(
     selectTasks,
-    (state:ITaskState)=>state.tasks
-    .find(val=>val.id==state.editedId
+    (state: ITaskState ) => state.tasks
+    .find(val => val.id === state.editedId
     )
 );

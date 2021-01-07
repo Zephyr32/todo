@@ -1,44 +1,46 @@
-<form [formGroup]="taskFb">
+<form [formGroup]="taskFormGroup">
   <h1 mat-dialog-title>Edit</h1>
   <div mat-dialog-content>
     <p>Edit data</p>
     <mat-form-field>
       <mat-label>Name Task</mat-label>
-      <input matInput formControlName="editTitleTask">
+      <input matInput formControlName="editTitleTask" #edit>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Description Task</mat-label>
       <textarea matInput formControlName="editDescriptionTask"></textarea>
     </mat-form-field>
-   
-    <div *ngIf="formGrouparray['controls']" formArrayName="groupArray">
-    <div *ngFor="let control of formGrouparray['controls']; index as i" [formGroupName]="i">
-      <mat-form-field>
-        <mat-label>Control</mat-label>
-        <input matInput formControlName="first" />
-      </mat-form-field>
-      <div class="alert-danger" *ngIf="control.controls.first.errors?.required&&control.controls.first.touched">заполни поле пожалста</div>
-      <div class="alert-danger" *ngIf="control.controls.first.errors?.minlength">поле должно содержать минимум 2 символа</div>
-      <div class="alert-danger" *ngIf="control.controls.first.errors?.pattern">введены неразрешенные символы</div>
-      <mat-form-field>
-        <mat-label>Control </mat-label>
-        <input matInput formControlName="second" />
-      </mat-form-field>
-      <div class="alert-danger" *ngIf="control.controls.second.errors?.required&&control.controls.second.touched">заполни поле пожалста</div>
-      <div class="alert-danger" *ngIf="control.controls.second.errors?.minlength">поле должно содержать минимум 2 символа</div>
-      <div class="alert-danger" *ngIf="control.controls.second.errors?.pattern">введены неразрешенные символы</div>
-      <button class="button" (click)="delInput(i)" >X</button>
+
+    <div *ngIf="formGroupArray['controls']" formArrayName="groupArray">
+      <div *ngFor="let group of formGroupArray['controls']; index as i" [formGroupName]="i">
+        <mat-form-field>
+          <mat-label>Control</mat-label>
+          <input matInput formControlName="firstControl"/>
+        </mat-form-field>
+        <ng-container
+          *ngTemplateOutlet="validationMessageTemplate; context:{control:group.controls.firstControl}"></ng-container>
+        <mat-form-field>
+          <mat-label>Control</mat-label>
+          <input matInput formControlName="secondControl"/>
+        </mat-form-field>
+        <ng-container
+          *ngTemplateOutlet="validationMessageTemplate; context:{control:group.controls.secondControl}"></ng-container>
+        <button class="button" (click)="deleteInput(i)">X</button>
+      </div>
     </div>
-  </div>
     <div>
-      <button mat-raised-button class="button" (click)="addGroupInput()">MOREMOREE</button>
+      <button mat-raised-button class="button" (click)="addGroupInput()">MORE MOREE</button>
     </div>
-  </div>
-    <!-- <span>{{formarr.controls| json}}</span> -->
-  
-  <div mat-dialog-actions>
+
     <button mat-raised-button (click)="dialogRef.close()">No Thanks</button>
-    <button mat-raised-button (click)="onClick()" [disabled]="!taskFb.valid">Ok</button>
+    <button mat-raised-button (click)="finishDialog()" [disabled]="!taskFormGroup.valid">Ok</button>
 
   </div>
 </form>
+
+
+<ng-template #validationMessageTemplate let-control="control" >
+  <div class="alert-danger" *ngIf="control?.errors?.required">{{validationMessage.required}}</div>
+  <div class="alert-danger" *ngIf="control?.errors?.minLength">{{validationMessage.minLength}}</div>
+  <div class="alert-danger" *ngIf="control?.errors?.pattern">{{validationMessage.pattern}}</div>
+  </ng-template>

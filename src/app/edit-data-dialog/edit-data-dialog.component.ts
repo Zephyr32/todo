@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, } from '@angular/core';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {  MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Task } from '../model/task';
 import { select, Store } from '@ngrx/store';
-import { selectEditTask, selectLenghtTask } from '../store/selectors/task.selectors';
-import { IAppState } from '../store/state/app.state';
+import { selectEditTask, selectLengthTask } from '../store/selectors/task.selectors';
 import { take, takeUntil } from 'rxjs/operators';
-import * as action from "../store/actions/task.actions";
+import * as action from '../store/actions/task.actions';
+import {IAppState} from '../store/reducers/task.reducer';
 
 @Component({
   selector: 'app-edit-data-dialog',
@@ -15,24 +15,29 @@ import * as action from "../store/actions/task.actions";
   styleUrls: ['./edit-data-dialog.component.css']
 })
 export class EditDataDialogComponent implements OnInit, OnDestroy {
-  taskFb: FormGroup;
+  taskFormGroup: FormGroup;
   butt: MatButton;
-  taskForStore:Task;
-  tasksLenght:number;
+  taskFromStore: Task;
+  tasksLength: number;
 
 
-  patternForSymbol="^[a-zA-Z0-9_]+$";
+  patternForSymbol = '^[a-zA-Z0-9_ ]+$';
+  validationMessage = {
+    minLength : 'поле должно содержать минимум 2 символа',
+    required : 'поле должно быть заполнено',
+    pattern : 'введены неразрешенные символы'
+  };
 
-  private asdasdasd = new EventEmitter();
+  private unSubscriber = new EventEmitter();
 
-  get formarray() { return this.taskFb.get('inputs') as FormArray; }
-  get formGrouparray() { return this.taskFb.get('groupArray') as FormArray; }
-  get isValid() { return this.formGrouparray.controls; }
+  get formArray(): FormArray { return this.taskFormGroup.get('inputs') as FormArray; }
+  get formGroupArray(): FormArray { return this.taskFormGroup.get('groupArray') as FormArray; }
+  get isValid(): AbstractControl[] { return this.formGroupArray.controls; }
 
-  
+
   constructor(
     public store: Store<IAppState>,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<EditDataDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: Task
@@ -40,117 +45,121 @@ export class EditDataDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.pipe(
-      select(selectLenghtTask),
+      select(selectLengthTask),
       take(1)
-    ).subscribe((length:number)=>{
-      this.tasksLenght=length;
-    })
+    ).subscribe((length: number) => {
+      this.tasksLength = length;
+    });
 
 
     this.store.pipe(
       select(selectEditTask),
-      takeUntil(this.asdasdasd)
+      takeUntil(this.unSubscriber)
     )
     .subscribe((task: Task) => {
-      this.taskForStore=task
+      this.taskFromStore = task;
       this.createForm();
-      this.setForm()
+      if (this.taskFromStore) {
+      this.setForm();
+      }
 
-    });    
+    });
 
 
   }
 
-  ngOnDestroy() {
-    this.asdasdasd.emit(true);
+  ngOnDestroy(): void {
+    this.unSubscriber.emit(true);
   }
 
-  createForm() {
-    this.taskFb = this.fb.group({
-      editTitleTask: [this.taskForStore ? this.taskForStore.title : '', 
+  createForm(): void {
+    this.taskFormGroup = this.formBuilder.group({
+      editTitleTask: [this.taskFromStore ? this.taskFromStore.title : '',
         [
           Validators.required,
           Validators.minLength(3),
-          Validators.maxLength(40)
+          Validators.maxLength(40),
+          Validators.pattern(this.patternForSymbol)
         ]],
-      editDescriptionTask: [this.taskForStore ? this.taskForStore.description : '',
+      editDescriptionTask: [this.taskFromStore ? this.taskFromStore.description : '',
        [
           Validators.required,
           Validators.minLength(5),
-          Validators.maxLength(100)
+          Validators.maxLength(100),
+         Validators.pattern(this.patternForSymbol)
         ]],
-      inputs: this.fb.array([]),
-      groupArray: this.fb.array([]),
+      inputs: this.formBuilder.array([]),
+      groupArray: this.formBuilder.array([]),
     });
+    console.log(this.taskFormGroup);
   }
 
   // todo
-  setForm(){
-    
-    for (const input of this.data.addingshit) {
-      this.formGrouparray.push(this.fb.group({
-        first:new FormControl(
-          input['first'],
+  setForm(): void{
+
+    for (const input of this.taskFromStore.addingShit) {
+      this.formGroupArray.push(this.formBuilder.group({
+        firstControl: new FormControl(
+          input.firstControl,
            [
              Validators.required,
              Validators.minLength(2),
              Validators.pattern(this.patternForSymbol)
            ]),
-        second:new FormControl(
-          input['second'],
+        secondControl: new FormControl(
+          input.secondControl,
            [
              Validators.required,
              Validators.minLength(2),
              Validators.pattern(this.patternForSymbol)
            ])
-      }))
+      }));
     }
   }
 
 
-  delInput(index){
-    this.formGrouparray.removeAt(index)
+  deleteInput(index: number): void{
+    this.formGroupArray.removeAt(index);
   }
 
 
-  addGroupInput() {
-    this.formGrouparray.push(this.fb.group({
-      first:new FormControl('', Validators.required),
-      second:new FormControl('', Validators.required)
+  addGroupInput(): void {
+    this.formGroupArray.push(this.formBuilder.group({
+      firstControl: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.pattern(this.patternForSymbol)
+      ]),
+      secondControl: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.pattern(this.patternForSymbol)
+      ])
     }));
   }
 
   // todo
-  onClick(): void {
-    if (this.taskFb.get('editTitleTask').valid && this.taskFb.get('editDescriptionTask').valid) {
-      const asd=
-        {
-          id:this.data.id,
-          title : this.taskFb.value['editTitleTask'],
-          description : this.taskFb.value['editDescriptionTask'],
-          addingshit:this.taskFb.value['groupArray'], 
-        }
-      console.log(asd);
-      this.dialogRef.close(asd);
-      if (asd && asd.id) {
-        this.store.dispatch(action.editTask({ task: this.taskForStore }));
-      } else if (this.taskForStore) {
-        this.store.dispatch(action.addTask(
-          {
-            task: new Task({
-              id: this.tasksLenght ? this.tasksLenght + 1 : 1,
-              title: asd.title,
-              description: asd.description,
-              addingshit: asd.addingshit,
-            })
-          }
+  finishDialog(): void {
+    if (this.taskFormGroup.get('editTitleTask').valid && this.taskFormGroup.get('editDescriptionTask').valid) {
+      const newTask: Task = new Task( {
+          id : this.taskFromStore ? this.taskFromStore.id : undefined,
+          title : this.taskFormGroup.value.editTitleTask,
+          description : this.taskFormGroup.value.editDescriptionTask,
+          addingShit : this.taskFormGroup.value.groupArray,
+          checked:  this.taskFromStore ? this.taskFromStore.checked : false,
+        });
+      if (newTask && newTask.id) {
+        this.store.dispatch(action.editTask({ task: newTask }));
+      } else {
+        this.store.dispatch(action.addTask({ task: newTask }
         ));
       }
+      this.dialogRef.close();
     }
 
 
 
-  
+
   }
 
 

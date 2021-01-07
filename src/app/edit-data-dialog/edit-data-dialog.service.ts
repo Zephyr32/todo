@@ -13,10 +13,10 @@ export class EditDataDialogService {
     public dialog: MatDialog
    ) { }
 
-  public open(etask?): void {
+  public openDialog(editTask?): void {
     this.dialog.open(EditDataDialogComponent, {
         width: '400px',
-        data: etask ? etask : new Task()
+        data: editTask ? editTask : new Task()
       }).afterClosed()
       .subscribe();
   }

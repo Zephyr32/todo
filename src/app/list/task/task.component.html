@@ -1,10 +1,6 @@
   <div class="task-content">
-    <div>
-      <mat-card-content class="task-decription">
-        <mat-checkbox [checked]="task.checked" (change)="check()" ></mat-checkbox>
-        <span matLine>{{task.id}}</span>
-      </mat-card-content>   
-    </div>
+    <mat-checkbox [checked]="task.checked" (change)="editCheckTask()" ></mat-checkbox>
+    <span matLine>{{task.id}}</span>
     <div class="content">
     <mat-card-title class="task-header">
       <span matLine>{{task.title}}</span>
@@ -17,7 +13,7 @@
       <button class="button" mat-raised-button color="warn" (click)="removeTask()">
         <mat-icon>delete</mat-icon>
       </button>
-      <button class="button" mat-raised-button color="warn" (click)="edittask()">
+      <button class="button" mat-raised-button color="warn" (click)="editTask()">
         <mat-icon>edit</mat-icon>
       </button>
     </mat-card-actions>
